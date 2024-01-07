@@ -69,8 +69,8 @@ recursive_walk(folder1)
 ##Ugly way of getting all literals
 def iterate(obj, stack):
     for attr, value in obj.items():
-        key = stack+"."+attr
-        
+        key = f"{stack}.{attr}"
+
         if any(item.startswith(key) or key.startswith(item) for item in excludedKeys):
             continue
         if key.endswith("_plural"):
@@ -86,7 +86,7 @@ def iterate(obj, stack):
 with open(locales) as f:
     data = json.load(f)
 iterate(data,'')
-print("Found "+str(len(rawkeys))+" literals")
+print(f"Found {len(rawkeys)} literals")
 
 ##After we have the raw keys, process them to extract dynamic fields from them
 ##Attempt to match against _maybe_ dynamic keys but still allow for static ones,
@@ -116,10 +116,12 @@ for file in files:
             if regexp.search(contents):
                 keys[key] = 0
 
-all = [ bcolors.NOK+key+bcolors.ENDC for (key, value) in keys.items() if value == 1]
-
-if len(all) == 0:
-    print("\nAll literals were found in the components")
-else:
+if all := [
+    bcolors.NOK + key + bcolors.ENDC
+    for (key, value) in keys.items()
+    if value == 1
+]:
     print("\nCouldn't find these literals:")
     print("\n".join(all))
+else:
+    print("\nAll literals were found in the components")

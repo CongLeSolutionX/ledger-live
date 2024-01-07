@@ -19,6 +19,6 @@ with open("./src/config/urls.js") as f:
     for url in urls:
         if url not in excludedURLs:
             c = requests.get(url)
-            if (int(c.status_code) > 200):
+            if c.status_code > 200:
                 print(c.status_code,":",url)
 
