@@ -49,10 +49,10 @@ class Convert:
         """
 
         pem = self.pubkey.public_bytes(serialization.Encoding.PEM, serialization.PublicFormat.SubjectPublicKeyInfo)
-        with open(self.filename + ".pem", "wb") as fp:
+        with open(f"{self.filename}.pem", "wb") as fp:
             fp.write(pem)
 
-        with open(self.filename + ".sig", "wb") as fp:
+        with open(f"{self.filename}.sig", "wb") as fp:
             fp.write(self.signature)
 
 
